@@ -8,6 +8,7 @@ export default function Home() {
   const [shortUrl, setShortUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [ textCopy, setTextCopy ] = useState("Copiar");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,11 +38,15 @@ export default function Home() {
     }
   };
 
-  const copyToClipboard = () => {
-    if (shortUrl) {
-      navigator.clipboard.writeText(shortUrl);
+ const copyToClipboard = async () => {
+  if (shortUrl) {
+    if (navigator.clipboard) {
+        await navigator.clipboard.writeText(shortUrl);
+        setTextCopy("Copiado");
+        setTimeout(() => setTextCopy("Copiar"), 2000);
     }
-  };
+  }
+};
 
   return (
     <div className="flex flex-col items-center justify-center py-12">
@@ -73,7 +78,7 @@ export default function Home() {
               className="input input-bordered w-full"
             />
             <button onClick={copyToClipboard} className="btn btn-success">
-              Copiar
+              {textCopy}
             </button>
           </div>
         </div>
