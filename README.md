@@ -1,6 +1,6 @@
-# 📎 Leave It Small — Frontend
+# 📎 Smaller — Frontend
 
-**Leave It Small** é um encurtador de URLs moderno e eficiente. Este repositório contém o front-end da aplicação, desenvolvido com **React 19**, **Vite**, **TailwindCSS** e **DaisyUI**, e servido em produção via **NGINX**.
+**Smaller** é um encurtador de URLs moderno e eficiente. Este repositório contém o front-end da aplicação, desenvolvido com **React 19**, **Vite**, **TailwindCSS** e **DaisyUI**, e servido em produção via **NGINX**.
 
 ---
 
