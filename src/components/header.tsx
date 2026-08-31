@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "../lib/utils";
+import Logo from "./logo";
 
 export function Header() {
   const location = useLocation();
@@ -12,14 +13,9 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-md">
       <div className="container mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        {/* Minimalist Logo */}
-        <Link to="/" className="flex items-center gap-2.5 group">
-          <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-sm group-hover:bg-indigo-500 transition-colors">
-            S
-          </div>
-          <span className="text-lg font-bold tracking-tight text-white">
-            Smaller
-          </span>
+        {/* Official Branding */}
+        <Link to="/" aria-label="Smaller Home">
+          <Logo size="md" />
         </Link>
 
         {/* Navigation */}

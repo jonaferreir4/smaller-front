@@ -1,15 +1,13 @@
 import { Link } from "react-router-dom";
+import Logo from "./logo";
 
 export function Footer() {
   return (
     <footer className="border-t border-slate-800/60 bg-slate-950 py-8 text-slate-400 text-sm">
       <div className="container mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded bg-indigo-600/20 text-indigo-400 flex items-center justify-center font-bold text-xs">
-            S
-          </div>
-          <span className="font-medium text-slate-300">Smaller</span>
-        </div>
+        <Link to="/" aria-label="Smaller Home">
+          <Logo size="sm" />
+        </Link>
 
         <nav className="flex items-center gap-6 text-xs text-slate-400">
           <Link to="/" className="hover:text-slate-200 transition-colors">

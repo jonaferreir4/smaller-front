@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import SearchInput from "../components/search-input";
 import SubmitButton from "../components/button-submit";
@@ -13,6 +13,10 @@ export default function Home() {
 
   const { shortUrl, isLoading, error, shortenUrl } = useShortenUrl();
   const { isCopied, copy } = useCopyToClipboard();
+
+  useEffect(() => {
+    document.title = "Smaller - Encurtador de URLs Rápido e Seguro";
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,19 +41,20 @@ export default function Home() {
 
       {/* Form Card */}
       <section className="p-6 sm:p-8 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-slate-800 shadow-lg relative z-20">
-        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3" id="shorten-form">
           <SearchInput
+            id="url-input"
             placeholder="Cole sua URL aqui (ex: https://meusite.com/link-longo)"
             value={urlInput}
             onChange={(e) => setUrlInput(e.target.value)}
             onClear={() => setUrlInput("")}
           />
-          <SubmitButton isLoading={isLoading}>Encurtar</SubmitButton>
+          <SubmitButton id="btn-shorten" isLoading={isLoading}>Encurtar</SubmitButton>
         </form>
 
         {/* Error Alert */}
         {error && (
-          <div className="mt-4 p-3.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-300 text-sm text-left flex items-center gap-2">
+          <div className="mt-4 p-3.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-300 text-sm text-left flex items-center gap-2" role="alert">
             <svg className="w-4 h-4 text-red-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -66,6 +71,7 @@ export default function Home() {
 
             <div className="flex flex-col sm:flex-row gap-2.5">
               <input
+                id="short-url-result"
                 type="text"
                 readOnly
                 value={shortUrl}
@@ -74,6 +80,7 @@ export default function Home() {
 
               <div className="flex gap-2 shrink-0">
                 <button
+                  id="btn-copy-url"
                   type="button"
                   onClick={() => copy(shortUrl)}
                   className={`btn btn-sm font-medium rounded-lg border-0 px-4 text-white transition-colors ${
@@ -84,6 +91,7 @@ export default function Home() {
                 </button>
 
                 <button
+                  id="btn-qr-modal"
                   type="button"
                   onClick={() => setIsQrOpen(true)}
                   className="btn btn-sm bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-lg px-3"

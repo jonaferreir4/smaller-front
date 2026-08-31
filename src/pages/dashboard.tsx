@@ -12,6 +12,7 @@ export default function Dashboard() {
   const { isCopied, copy } = useCopyToClipboard();
 
   useEffect(() => {
+    document.title = "Dashboard & Insights - Smaller";
     const urlFromQuery = searchParams.get("url");
     if (urlFromQuery) {
       setShortUrlInput(urlFromQuery);
@@ -41,18 +42,19 @@ export default function Dashboard() {
 
       {/* Lookup Form */}
       <div className="p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-slate-800 shadow-md">
-        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3" id="insights-form">
           <SearchInput
+            id="insights-url-input"
             placeholder="Cole sua URL encurtada ou código (ex: abc123)"
             value={shortUrlInput}
             onChange={(e) => setShortUrlInput(e.target.value)}
             onClear={() => setShortUrlInput("")}
           />
-          <SubmitButton isLoading={isLoading}>Buscar</SubmitButton>
+          <SubmitButton id="btn-search-insights" isLoading={isLoading}>Buscar</SubmitButton>
         </form>
 
         {error && (
-          <div className="mt-4 p-3.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-300 text-sm flex items-center gap-2">
+          <div className="mt-4 p-3.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-300 text-sm flex items-center gap-2" role="alert">
             <svg className="w-4 h-4 text-red-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
