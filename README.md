@@ -1,202 +1,119 @@
 # Smaller - Frontend
 
-## Visão Geral
+Interface web moderna para encurtamento, gerenciamento e análise estatística de URLs, desenvolvida com **React 19**, **TypeScript**, **Vite**, **Tailwind CSS 4** e **DaisyUI 5**.
 
-O **Smaller** é um front-end para um serviço de encurtamento e gerenciamento de URLs. A aplicação foi projetada utilizando **React 19**, **TypeScript** e **Vite**, adotando uma arquitetura baseada em componentes reutilizáveis e responsivos estilizados com **TailwindCSS 4** e **DaisyUI 5**.
-
-A solução contempla suporte completo à execução em containers Docker com build multi-stage e servidor de produção via **NGINX**, configurado para atuar como servidor estático de Single Page Application (SPA) e proxy reverso para as chamadas de API do backend.
+O projeto conta com um **Ambiente de Desenvolvimento Orientado a IA** (AI-Driven Development Environment) integrado, padronizado com regras de arquitetura, guias operacionais e ecossistema de *Skills* para assistentes de IA (Gemini, Claude, Cursor, Copilot, AGY).
 
 ---
 
-## Funcionalidades Principais
+## 🚀 Funcionalidades Principais
 
-- **Encurtamento de URLs**: Interface para envio de links de longo comprimento e geração de URLs encurtadas com funcionalidade de cópia rápida para a área de transferência.
-- **Dashboard de Insights**: Consulta de métricas detalhadas de URLs encurtadas, incluindo total de cliques registrados, link original e data de criação em formato UTC.
-- **Roteamento Dinâmico**: Navegação fluida entre páginas sem recarregamento da aplicação (SPA) através do React Router DOM v7.
-- **Tratamento de Erros e Feedback de UI**: Exibição de estados de carregamento (loading), validação de entrada de dados e mensagens claras de falhas de comunicação com a API.
-
----
-
-## Arquitetura e Tecnologias
-
-### Tecnologias Core
-
-- **React 19**: Biblioteca para construção de interfaces declarativas e baseadas em componentes.
-- **TypeScript 5**: Tipagem estática para garantia de contrato de dados, componentes e prevenção de erros em tempo de compilação.
-- **Vite 7**: Ferramenta de build e ambiente de desenvolvimento rápido com HMR (Hot Module Replacement).
-- **React Router DOM 7**: Gerenciamento de rotas do lado do cliente.
-- **Axios 1.11**: Cliente HTTP baseado em Promessas para consumo dos endpoints REST.
-
-### Estilização e UI
-
-- **TailwindCSS 4**: Framework CSS utilitário para construção rápida de layouts responsivos.
-- **DaisyUI 5**: Biblioteca de componentes de interface baseada em classes utilitárias do TailwindCSS.
-
-### Infraestrutura e Deploy
-
-- **Docker**: Containerização com estratégia Multi-Stage Build para otimização da imagem final.
-- **NGINX 1.27 Alpine**: Servidor web leve configurado para servir a aplicação React compilada e redirecionar requisições `/api` para a aplicação backend.
+- **Encurtamento Inteligente de URLs**: Interface rápida e intuitiva para envio de URLs de longo comprimento e geração de links curtos com cópia para área de transferência em 1 clique.
+- **Feedback Visual & Interativo**: Estados claros de carregamento (loading), tratamento amigável de erros de API e feedback tátil/visual.
+- **Dashboard de Insights**: Consulta de métricas detalhadas de URLs encurtadas (total de acessos/cliques registrados, URL original e data de criação em formato UTC).
+- **Roteamento SPA de Alta Performance**: Navegação fluida sem recarregamento da aplicação através do React Router DOM v7.
+- **Containerização Pronta para Produção**: Build multi-stage Docker otimizado com NGINX atuando como servidor estático e proxy reverso para a API backend.
 
 ---
 
-## Estrutura do Projeto
+## 🛠️ Stack Tecnológica
+
+| Camada | Tecnologia |
+|---|---|
+| **Framework UI** | React 19 + Vite 7 |
+| **Linguagem** | TypeScript 5 (Modo Estrito) |
+| **Roteamento** | React Router DOM 7 |
+| **Estilização** | Tailwind CSS v4 + DaisyUI 5 |
+| **Cliente HTTP** | Axios 1.11 |
+| **Containerização** | Docker + NGINX 1.27 Alpine |
+| **Ambiente de IA** | Agents.md + Claude.md + Ecossistema de Skills (`.agents/`) |
+
+---
+
+## 🤖 Ambiente de Desenvolvimento Orientado a IA
+
+Este repositório foi projetado para operar com suporte nativo a assistentes autônomos de IA. A governança do código e os padrões arquiteturais são assegurados através de:
+
+- **[AGENTS.md](file:///home/jona/Área%20de%20trabalho/smaller-front/AGENTS.md)**: Define as regras rígidas e invioláveis de desenvolvimento, separação de responsabilidades (SRP), padrões de estilização, tipagem estrita e limites de linhas por componente.
+- **[CLAUDE.md](file:///home/jona/Área%20de%20trabalho/smaller-front/CLAUDE.md)**: Guia executivo contendo comandos rápidos de build/lint, resumo da arquitetura, contratos de API e estilo de código para agentes.
+- **Ecossistema de Skills (`.agents/`)**:
+  - `skills/`: Skills customizadas do domínio da aplicação (`smaller-url-shortener`, `smaller-ui-redesign`).
+  - `skills/vendor/`: Skills de comunidade e mercado com boas práticas mantidas por especialistas da Vercel, Meta, ThoughtWorks e OWASP (`senior-frontend`, `tailwind-ui-design-system`, `solid-clean-code`, `security-and-hardening`, `zod-schema-validation`).
+
+---
+
+## 📂 Estrutura do Projeto
 
 ```text
 smaller-front/
+├── .agents/                    # Ecossistema de Skills de IA (locais e vendor)
+│   ├── skills.json             # Registro de busca de skills
+│   ├── skills/                 # Skills customizadas do domínio
+│   └── skills/vendor/          # Skills de comunidade/vendor
 ├── public/                     # Arquivos estáticos públicos
 ├── src/
-│   ├── assets/                 # Recursos visuais (imagens, vetores)
+│   ├── assets/                 # Recursos visuais (vetores, imagens)
 │   ├── components/             # Componentes reutilizáveis da UI
-│   │   ├── button-submit.tsx   # Botão de submissão reutilizável com estado desabilitado
-│   │   ├── footer.tsx          # Rodapé padronizado da aplicação
-│   │   ├── header.tsx          # Barra de navegação superior com links de rota
-│   │   ├── layout.tsx          # Wrapper principal definindo a estrutura visual da página
-│   │   └── search-input.tsx    # Campo de entrada de texto padronizado
-│   ├── pages/                  # Páginas Principais da Aplicação
-│   │   ├── dashboard.tsx       # Página de consulta de estatísticas e métricas de URLs
-│   │   └── home.tsx            # Página inicial para encurtamento de links
-│   ├── services/               # Configurações de serviços externos
-│   │   └── axios.ts            # Instância global do Axios com baseURL configurada para /api
+│   ├── hooks/                  # Custom hooks encapsulando lógica de negócio
+│   ├── pages/                  # Composição visual de páginas (Home, Dashboard)
+│   ├── services/               # Clientes HTTP puros (axios.ts)
+│   ├── types/                  # Definições de tipos TypeScript
 │   ├── App.css                 # Estilos específicos da aplicação
-│   ├── App.tsx                 # Configuração de rotas da aplicação
-│   ├── main.css                # Importação de estilos globais e TailwindCSS
-│   ├── main.tsx               # Ponto de entrada da aplicação React
-│   └── vite-env.d.ts           # Declarações de tipos de ambiente do Vite
-├── Dockerfile                  # Script de containerização multi-stage (Node + NGINX)
-├── eslint.config.js            # Configurações de linter (ESLint 9)
-├── index.html                  # Documento HTML base da aplicação
-├── nginx.conf                  # Configuração do NGINX (SPA fallback + Proxy Reverso)
-├── package.json                # Manifesto de dependências e scripts do projeto
-├── tsconfig.json               # Configuração raiz do TypeScript
-├── tsconfig.app.json           # Configuração de compilação do TypeScript para a aplicação
-├── tsconfig.node.json          # Configuração do TypeScript para scripts Node/Vite
-└── vite.config.ts              # Configuração do bundling e plugins do Vite
+│   ├── App.tsx                 # Roteamento principal da aplicação
+│   ├── main.css                # Importação global do Tailwind CSS v4
+│   └── main.tsx                # Ponto de entrada do React 19
+├── AGENTS.md                   # Regras invioláveis para Agentes de IA
+├── CLAUDE.md                   # Guia rápido para Agentes de IA
+├── Dockerfile                  # Script de containerização multi-stage
+├── nginx.conf                  # Configuração do NGINX (SPA Fallback + Proxy Reverso)
+└── package.json                # Manifesto de dependências e scripts do projeto
 ```
 
 ---
 
-## Integração com a API (Backend)
+## 💻 Como Rodar o Projeto
 
-As chamadas HTTP são centralizadas na instância do Axios (`src/services/axios.ts`) configurada para utilizar o prefixo `/api`.
+### Pré-requisitos
+- Node.js >= 20.0.0
+- npm >= 10.0.0
 
-### Endpoints Consumidos
+### Desenvolvimento Local
+
+```bash
+# 1. Instalar as dependências
+npm install
+
+# 2. Iniciar o servidor de desenvolvimento
+npm run dev
+
+# 3. Executar checagem de linter e compilação TypeScript
+npm run lint
+npm run build
+```
+
+### Execução via Docker
+
+```bash
+# Construir a imagem Docker
+docker build -t smaller-front .
+
+# Iniciar o container na porta 80
+docker run -p 80:80 smaller-front
+```
+
+---
+
+## 🌐 Endpoints da API Consumidos
+
+A aplicação consome a API backend através da instância do Axios (`src/services/axios.ts`) no prefixo `/api`:
 
 1. **Encurtar URL**
    - **Método**: `POST`
    - **Rota**: `/api/shorten`
-   - **Corpo da Requisição**:
-     ```json
-     {
-       "url": "https://exemplo.com/link-muito-longo-para-encurtar"
-     }
-     ```
-   - **Resposta de Sucesso**:
-     ```json
-     {
-       "shortUrl": "http://localhost/abc123"
-     }
-     ```
+   - **Body**: `{ "url": "https://link-longo.com/exemplo" }`
+   - **Response**: `{ "shortUrl": "http://localhost/abc123" }`
 
 2. **Obter Insights da URL**
    - **Método**: `GET`
-   - **Rota**: `/api/links/{code}`
-   - **Resposta de Sucesso**:
-     ```json
-     {
-       "originalUrl": "https://exemplo.com/link-muito-longo-para-encurtar",
-       "shortUrl": "http://localhost/abc123",
-       "clicks": 42,
-       "createdOnUtc": "2025-01-01T00:00:00Z"
-     }
-     ```
-
----
-
-## Configuração do Ambiente de Desenvolvimento
-
-### Pré-requisitos
-
-- **Node.js**: Versão 20.x ou superior
-- **npm**: Versão 10.x ou superior
-
-### Instalação
-
-1. Clone o repositório para o seu ambiente local:
-   ```bash
-   git clone <URL_DO_REPOSITORIO>
-   cd smaller-front
-   ```
-
-2. Instale as dependências do projeto:
-   ```bash
-   npm install
-   ```
-
-### Executando em Modo de Desenvolvimento
-
-Para iniciar o servidor de desenvolvimento local com suporte a substituição de código em tempo real (HMR):
-
-```bash
-npm run dev
-```
-
-A aplicação estará acessível por padrão no endereço informado pelo Vite (ex: `http://localhost:5173`).
-
----
-
-## Scripts NPM Disponíveis
-
-No diretório do projeto, você pode executar os seguintes comandos:
-
-| Comando | Descrição |
-| :--- | :--- |
-| `npm run dev` | Inicia o servidor de desenvolvimento do Vite. |
-| `npm run build` | Executa a verificação de tipos com TypeScript (`tsc -b`) e compila o código para produção na pasta `dist`. |
-| `npm run preview` | Servidor local para pré-visualização da build de produção. |
-| `npm run lint` | Executa a análise estática de código utilizando ESLint. |
-
----
-
-## Execução via Docker e NGINX
-
-O projeto inclui suporte para execução containerizada em ambientes de staging e produção.
-
-### Build da Imagem Docker
-
-Para construir a imagem Docker localmente:
-
-```bash
-docker build -t smaller-front .
-```
-
-### Execução do Container
-
-Para executar o container mapeando a porta 80 da máquina hospedeira:
-
-```bash
-docker run -d -p 80:80 --name smaller-front-container smaller-front
-```
-
-### Detalhes de Infraestrutura Docker & NGINX
-
-1. **Stage 1 (Build)**: Utiliza a imagem `node:20-alpine` para instalar dependências e executar o comando `npm run build`, gerando os artefatos estáticos no diretório `/app/dist`.
-2. **Stage 2 (Runtime)**: Utiliza `nginx:1.27-alpine`, descarta os arquivos do Node.js de compilação e copia apenas o resultado da build estática para o diretório de entrega do NGINX (`/usr/share/nginx/html`).
-3. **Proxy Reverso (`nginx.conf`)**:
-   - Todas as requisições para a aplicação SPA são redirecionadas para `index.html` via `try_files $uri /index.html`.
-   - As requisições de API sob o caminho `/api` são encaminhadas via proxy (`proxy_pass`) para o serviço backend interno nomeado `http://leaveit-app:5000/api`.
-
----
-
-## Qualidade de Código e Padrões
-
-O projeto utiliza **ESLint 9** integrado ao TypeScript e React Hooks para manter o padrão de código e boas práticas:
-
-- Análise estática de regras do React Hooks (`eslint-plugin-react-hooks`).
-- Regras de atualização e ciclo de vida do React (`eslint-plugin-react-refresh`).
-- Verificação rigorosa de tipos com `@typescript-eslint`.
-
-Para rodar a verificação de linter manualmente:
-
-```bash
-npm run lint
-```
+   - **Rota**: `/api/insights/:code`
+   - **Response**: Detalhes de acessos, URL original e estatísticas.
