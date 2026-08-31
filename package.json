@@ -1,5 +1,5 @@
 {
-  "name": "lim-front",
+  "name": "smaller-front",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -17,7 +17,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.7.1",
-    "tailwind-merge": "^3.6.0",
+    "tailwind-merge": "^3.0.2",
     "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
