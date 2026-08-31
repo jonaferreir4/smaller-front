@@ -1,15 +1,27 @@
 import { cn } from "../lib/utils";
+import { Download, X } from "lucide-react";
 
 interface QrModalProps {
   isOpen: boolean;
   onClose: () => void;
   url: string;
+  code?: string;
 }
 
-export function QrModal({ isOpen, onClose, url }: QrModalProps) {
+export function QrModal({ isOpen, onClose, url, code }: QrModalProps) {
   if (!isOpen) return null;
 
-  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(url)}&color=6366f1&bgcolor=0f172a`;
+  const extractCode = (shortUrl: string) => {
+    try {
+      const u = new URL(shortUrl);
+      return u.pathname.split("/").filter(Boolean).pop() || "";
+    } catch {
+      return shortUrl;
+    }
+  };
+
+  const shortCode = code || extractCode(url);
+  const qrCodeEndpoint = shortCode ? `/api/links/${shortCode}/qrcode` : `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(url)}&color=6366f1&bgcolor=0f172a`;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200">
@@ -20,35 +32,34 @@ export function QrModal({ isOpen, onClose, url }: QrModalProps) {
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+          className="absolute top-4 right-4 p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
           aria-label="Fechar modal"
         >
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
+          <X className="w-5 h-5" />
         </button>
 
         <h3 className="text-xl font-bold text-slate-100">QR Code da URL</h3>
-        <p className="text-xs text-slate-400 break-all px-2">{url}</p>
+        <p className="text-xs text-slate-400 break-all px-2 font-mono">{url}</p>
 
         <div className="flex justify-center p-4 bg-slate-950/80 rounded-xl border border-slate-800/80">
           <img
-            src={qrCodeUrl}
+            src={qrCodeEndpoint}
             alt="QR Code da URL Encurtada"
-            className="w-48 h-48 rounded-lg shadow-md"
+            className="w-48 h-48 rounded-lg shadow-md bg-white p-2"
             loading="lazy"
           />
         </div>
 
         <div className="pt-2 flex justify-center gap-3">
           <a
-            href={qrCodeUrl}
-            download="smaller-qr-code.png"
+            href={qrCodeEndpoint}
+            download={`qrcode-${shortCode || "url"}.png`}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn btn-sm bg-indigo-600 hover:bg-indigo-500 text-white border-0 rounded-lg px-4"
+            className="btn btn-sm bg-indigo-600 hover:bg-indigo-500 text-white border-0 rounded-lg px-4 flex items-center gap-2"
           >
-            Baixar QR Code
+            <Download className="w-4 h-4" />
+            Baixar PNG
           </a>
           <button
             onClick={onClose}
