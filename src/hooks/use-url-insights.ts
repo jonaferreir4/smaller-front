@@ -1,9 +1,9 @@
 import { useState, useCallback } from "react";
 import { api } from "../services/axios";
-import type { UrlInsightsResponse } from "../types/api";
+import type { UrlAnalyticsResponse } from "../types/api";
 
 export function useUrlInsights() {
-  const [insights, setInsights] = useState<UrlInsightsResponse | null>(null);
+  const [analytics, setAnalytics] = useState<UrlAnalyticsResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -26,18 +26,17 @@ export function useUrlInsights() {
 
     setIsLoading(true);
     setError("");
-    setInsights(null);
+    setAnalytics(null);
 
     try {
-      const response = await api.get<UrlInsightsResponse>(`/links/${code}`);
-      setInsights(response.data);
-    } catch (err: unknown) {
-      console.error(err);
+      const response = await api.get<UrlAnalyticsResponse>(`/links/${code}/analytics`);
+      setAnalytics(response.data);
+    } catch {
       setError("Não foi possível encontrar estatísticas para esta URL. Verifique o código informado.");
     } finally {
       setIsLoading(false);
     }
   }, []);
 
-  return { insights, isLoading, error, fetchInsights };
+  return { analytics, insights: analytics ? { clicks: analytics.totalClicks, originalUrl: analytics.originalUrl, shortUrl: analytics.shortUrl, createdOnUtc: "" } : null, isLoading, error, fetchInsights };
 }

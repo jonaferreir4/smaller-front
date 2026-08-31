@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { api } from "../services/axios";
-import type { ShortenUrlResponse } from "../types/api";
+import type { ShortenUrlRequest, ShortenedUrlResponse } from "../types/api";
 
 export function useShortenUrl() {
-  const [shortUrl, setShortUrl] = useState("");
+  const [result, setResult] = useState<ShortenedUrlResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const shortenUrl = async (longUrl: string): Promise<boolean> => {
-    const trimmed = longUrl.trim();
+  const shortenUrl = async (payload: ShortenUrlRequest): Promise<boolean> => {
+    const trimmed = payload.url.trim();
 
     if (!trimmed) {
       setError("Por favor, insira uma URL para encurtar.");
@@ -28,11 +28,16 @@ export function useShortenUrl() {
 
     setIsLoading(true);
     setError("");
-    setShortUrl("");
+    setResult(null);
 
     try {
-      const response = await api.post<ShortenUrlResponse>("/shorten", { url: trimmed });
-      setShortUrl(response.data.shortUrl);
+      const response = await api.post<ShortenedUrlResponse>("/shorten", {
+        url: trimmed,
+        customCode: payload.customCode?.trim() || undefined,
+        expiresAtUtc: payload.expiresAtUtc ? new Date(payload.expiresAtUtc).toISOString() : undefined,
+        maxClicks: payload.maxClicks ? Number(payload.maxClicks) : undefined,
+      });
+      setResult(response.data);
       return true;
     } catch (err: unknown) {
       if (
@@ -61,10 +66,10 @@ export function useShortenUrl() {
   };
 
   const reset = () => {
-    setShortUrl("");
+    setResult(null);
     setError("");
     setIsLoading(false);
   };
 
-  return { shortUrl, isLoading, error, shortenUrl, reset };
+  return { shortUrl: result?.shortUrl || "", result, isLoading, error, shortenUrl, reset };
 }
