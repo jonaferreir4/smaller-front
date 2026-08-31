@@ -1,20 +1,50 @@
-// header.tsx
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { cn } from "../lib/utils";
 
-export default function Header() {
-    return (
-        <header className="bg-base-200 shadow-md">
-            <div className="navbar container mx-auto">
-                <div className="flex-1">
-                    <Link to="/" className="btn btn-ghost text-xl">Smaller</Link>
-                </div>
-                <div className="flex-none">
-                    <ul className="menu menu-horizontal px-1">
-                        <li><Link to="/">Home</Link></li>
-                        <li><Link to="/dashboard">Dashboard</Link></li>
-                    </ul>
-                </div>
-            </div>
-        </header>
-    );
+export function Header() {
+  const location = useLocation();
+
+  const navLinks = [
+    { name: "Home", path: "/" },
+    { name: "Dashboard", path: "/dashboard" },
+  ];
+
+  return (
+    <header className="sticky top-0 z-40 w-full border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-md">
+      <div className="container mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+        {/* Minimalist Logo */}
+        <Link to="/" className="flex items-center gap-2.5 group">
+          <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-sm group-hover:bg-indigo-500 transition-colors">
+            S
+          </div>
+          <span className="text-lg font-bold tracking-tight text-white">
+            Smaller
+          </span>
+        </Link>
+
+        {/* Navigation */}
+        <nav className="flex items-center gap-1">
+          {navLinks.map((link) => {
+            const isActive = location.pathname === link.path;
+            return (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={cn(
+                  "px-3.5 py-1.5 rounded-lg text-sm font-medium transition-colors",
+                  isActive
+                    ? "bg-slate-800 text-white font-semibold"
+                    : "text-slate-400 hover:text-slate-200 hover:bg-slate-900"
+                )}
+              >
+                {link.name}
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
+    </header>
+  );
 }
+
+export default Header;
